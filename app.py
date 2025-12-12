@@ -45,7 +45,7 @@ def is_device_live():
 @app.route("/")
 def route():
     return jsonify({
-        "phone_nearby": is_device_live(),
+        "device_connected": is_device_live(),
         "timestamp": int(time.time())
     })
 
