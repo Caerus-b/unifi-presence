@@ -6,7 +6,8 @@ import os
 UNIFI_URL = os.getenv("UNIFI_URL") # e.g https://10.10.10.10:8080
 API_KEY = os.getenv("UNIFI_KEY") 
 SITE_ID = os.getenv("UNIFI_SITE")
-DEVICE_MAC = os.getenv("DEVICE_MAC")
+DEVICE_NAME = os.getenv("DEVICE_NAME")
+
 
 
 app = Flask(__name__)
@@ -34,8 +35,7 @@ def is_device_live():
             print("Failed to authenticate with Unifi Application while grabbing clients.")
         clients = res.json().get("data", [])
         for client in clients:
-            print(client.get("name"))
-            if client.get("mac", "").lower() == DEVICE_MAC.lower():  # Filter response data entries for device mac address
+            if client.get("name", "").lower() == DEVICE_NAME.lower():  # Filter response data entries for device name
                 return True
         return False
     except Exception as error:
