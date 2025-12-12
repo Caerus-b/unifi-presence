@@ -10,7 +10,7 @@ To run this project, you will need to add the following environment variables to
 
 `UNIFI_URL`- URL of your unifi application e.g https://10.10.10.10:8080
 
-`API_KEY`- This can ge found in the unifi intergrations section.
+`UNIFI_KEY`- This can ge found in the unifi intergrations section.
 
 `SITE_ID`- ID of site target device is a member of, if site isnt supplied one will be defaulted to.
 
