@@ -3,24 +3,24 @@ import requests
 import time
 import os
 
-#UNIFI_URL = os.getenv("UNIFI_URL") # e.g https://10.10.10.10:8080
-#API_KEY = os.getenv("UNIFI_KEY") 
-#SITE_ID = os.getenv("UNIFI_SITE")
-#DEVICE_MAC = os.getenv("DEVICE_MAC")
-
+UNIFI_URL = os.getenv("UNIFI_URL") # e.g https://10.10.10.10:8080
+API_KEY = os.getenv("UNIFI_KEY") 
+SITE_ID = os.getenv("UNIFI_SITE")
+DEVICE_MAC = os.getenv("DEVICE_MAC")
 
 
 app = Flask(__name__)
 session = requests.Session()
 session.verify = False  # ignore SSL warnings for self-signed certs
 
+headers = {'X-API-KEY': API_KEY}
 def get_site_id():
     global SITE_ID
     if SITE_ID is None:
         print("No site ID specified, detecting automatically")
-        res = session.get(f"{UNIFI_URL}/proxy/network/integration/v1/sites")
+        res = session.get(f"{UNIFI_URL}/proxy/network/integration/v1/sites", headers=headers)
         if res.status_code == 401:  
-            print("Failed to authenticate with Unifi Application.")
+            print("Failed to authenticate with Unifi Application while grabbing site ID.")
         sites = res.json().get("data", [])
         for site in sites:
             print(f'Found Site: {site.get("name", "")} with ID: {site.get("id", "")}')
@@ -29,9 +29,9 @@ def get_site_id():
 
 def is_device_live():
     try:
-        res = session.get(f"{UNIFI_URL}/proxy/network/integration/v1/sites/{SITE_ID}/clients")
+        res = session.get(f"{UNIFI_URL}/proxy/network/integration/v1/sites/{SITE_ID}/clients", headers=headers)
         if res.status_code == 401:  
-            print("Failed to authenticate with Unifi Application.")
+            print("Failed to authenticate with Unifi Application while grabbing clients.")
         clients = res.json().get("data", [])
         for client in clients:
             print(client.get("name"))
