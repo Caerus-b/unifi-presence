@@ -55,6 +55,7 @@ def require_api_key(func):
 
 
 @app.route("/")
+@require_api_key
 def route():
     return jsonify({
         "device_connected": is_device_live(),
